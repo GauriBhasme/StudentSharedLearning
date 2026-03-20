@@ -1,0 +1,21 @@
+:root {
+  /* Primary Colors */
+  --color-primary: #2563EB;
+  --color-primary-hover: #1D4ED8;
+
+  /* Secondary */
+  --color-secondary: #7C3AED;
+
+  /* Tertiary */
+  --color-success: #22C55E;
+
+  /* Status Colors */
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+
+  /* Neutral */
+  --color-text: #E2E8F0;
+  --color-bg: #0F172A;
+  --color-card: #E2E8F0;
+  --color-border: #050404;
+}
