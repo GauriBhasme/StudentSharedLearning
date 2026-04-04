@@ -1,0 +1,17 @@
+body {
+  background: #f8f9fa;
+}
+
+.request-card {
+  max-width: 400px;
+  border-radius: 12px;
+}
+
+.request-card h4 {
+  color: #0d6efd;
+}
+
+.request-card .btn-primary {
+  font-weight: 600;
+  border-radius: 8px;
+}

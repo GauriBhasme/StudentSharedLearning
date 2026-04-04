@@ -1,32 +1,74 @@
-from flask import Blueprint, request, jsonify, redirect, render_template, flash, url_for
-import db from db
-import User from models
+from flask import Blueprint, request, jsonify, redirect, render_template, flash, url_for, session
+# from app import db
+from models import Student
+from werkzeug.security import check_password_hash, generate_password_hash
+from db import db
+import jwt
+import os
+import dotenv
+from datetime import datetime, timedelta
+
+
+dotenv.load_dotenv()
 
 #define auth blueprint
 auth_bp = Blueprint("auth",__name__)
 
-@auth_bp.route('/login',methods=['post'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Invalid username or password')
-    return render_template('login.html')
-    
-@auth_bp.route('/register',methods=['post'])
+@auth_bp.route('/register', methods=['GET'])
+def register_page():
+    return render_template('register.html')
+
+@auth_bp.route('/register', methods=['POST'])
 def register_user():
-    username = request.form["uname"]
-    email = request.form["email"]
-    branch = request.form["branch"]
-    year = request.form["year"]
+    student_name = request.form.get('name')
+    email = request.form.get('email')
+    department = request.form.get('department')
+    year = request.form.get('year')
+    password = request.form.get('password')
 
-    #find if user exists
-    db.execute(f"SELECT * FROM student WHERE email=(%s)",email)
-    
+    # Hash password
+    hashed_password = generate_password_hash(password)
+
+    # Create user object
+    new_student = Student(
+        student_name=student_name,
+        email=email,
+        department=department,
+        year=year,
+        password=hashed_password
+    )
+
+    try:
+        db.session.add(new_student)
+        db.session.commit()
+        flash("Registration Successful!", "success")
+        print("New student registered: {}".format(email))
+        return redirect(url_for('auth.login_page'))
+    except:
+        flash("Email already exists!", "error")
+        print("Registration failed for email: {}".format(email))
+        return redirect(url_for('auth.login_page'))
+
+#LOGIN
+@auth_bp.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
 
 
+@auth_bp.route('/login', methods=['POST'])
+def login_user():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    student = Student.query.filter_by(email=email).first()
+
+    if student and check_password_hash(student.password, password):
+        session['user'] = email   # store user in session
+        return redirect(url_for('student.get_dashboard'))
+
+    return "Invalid credentials", 401
+
+
+@auth_bp.route('/logout')
+def logout():
+    return "Logout successful"

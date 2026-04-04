@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Users</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .user-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-radius: 12px;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Discover Users</span>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class=" container">
+                <div class="row" id="users"></div>
+        </div>
+
+        <script>
+            fetch('/discover/users')
+                .then(response => response.json())
+                .then(data => {
+                    const users = data.users;
+                    const usersDiv = document.getElementById('users');
+
+                    users.forEach(user => {
+
+                        const col = document.createElement('div');   // ✅ FIX
+                        col.className = "col-md-4 mb-4";
+
+                        const name = user.student_name || "User";
+                        const firstLetter = name.charAt(0).toUpperCase();
+
+                        col.innerHTML = `
+        <div class="card user-card p-3">
+            <div class="d-flex align-items-center mb-3">
+                <div class="avatar me-3">
+                    ${firstLetter}
+                </div>
+                <div>
+                    <h5 class="mb-0">${name}</h5>
+                    <small class="text-muted">${user.email}</small>
+                </div>
+            </div>
+            <button class="btn btn-outline-primary btn-sm w-100 select-teacher-btn" data-id="${user.student_id}">
+                select as Teacher
+            </button>
+        </div>
+    `;
+
+                        usersDiv.appendChild(col);
+                    });
+                });
+
+
+            //logic for selecting a teacher
+            document.addEventListener("click", function (e) {
+                if (e.target.classList.contains("select-teacher-btn")) {
+
+                    const teacherId = e.target.getAttribute("data-id");
+
+                    // Store selected teacher temporarily
+                    localStorage.setItem("selectedTeacher", teacherId);
+
+                    // Redirect to request page
+                    window.location.href = "/selected-create";
+                }
+            });
+        </script>
+
+</body>
+
+</html>

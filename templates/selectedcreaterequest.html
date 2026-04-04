@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Request</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h3>Create Request</h3>
+
+    <!-- Teacher Info -->
+    <div class="mb-3">
+        <label class="form-label">Selected Teacher ID</label>
+        <input type="text" id="teacherId" class="form-control" readonly>
+    </div>
+
+    <!-- Title -->
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" id="title" class="form-control">
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea id="description" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-primary" onclick="submitRequest()">Send Request</button>
+</div>
+
+<script>
+    // 🔹 Step 1: Get teacher ID from localStorage
+    const teacherId = localStorage.getItem("selectedTeacher");
+
+    // 🔹 Step 2: Show it in input field
+    document.getElementById("teacherId").value = teacherId;
+
+    // 🔹 Step 3: Submit request
+    function submitRequest() {
+
+        fetch("/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                teacher_id: teacherId,
+                title: document.getElementById("title").value,
+                description: document.getElementById("description").value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            localStorage.removeItem("selectedTeacher"); // cleanup
+        });
+    }
+</script>
+
+</body>
+</html>

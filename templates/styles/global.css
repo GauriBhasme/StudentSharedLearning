@@ -19,3 +19,14 @@
   --color-card: #E2E8F0;
   --color-border: #050404;
 }
+
+body{
+  
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}

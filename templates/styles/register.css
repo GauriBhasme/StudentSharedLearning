@@ -1,0 +1,27 @@
+body {
+  background: #f8f9fa;
+}
+
+.register-card {
+  max-width: 450px;
+  border-radius: 12px;
+}
+
+.register-card h2 {
+  color: #0d6efd;
+}
+
+.register-card p {
+  font-size: 0.95rem;
+}
+
+.register-card .btn-primary {
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.register-card .form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #495057;
+}
