@@ -8,6 +8,8 @@ import os
 import dotenv
 from datetime import datetime, timedelta
 
+departments = ['CSE', 'ECE', 'EEE', 'MECH', 'CIVIL', 'IT', 'BIO-TECH', 'CHEMICAL', 'MCA', 'MBA', 'MSC', 'BSC', 'B.TECH', 'PHD']
+years = ['1', '2', '3', '4', '5']
 
 dotenv.load_dotenv()
 
@@ -16,7 +18,7 @@ auth_bp = Blueprint("auth",__name__)
 
 @auth_bp.route('/register', methods=['GET'])
 def register_page():
-    return render_template('register.html')
+    return render_template('register.html', departments=departments, years=years)
 
 @auth_bp.route('/register', methods=['POST'])
 def register_user():
@@ -72,3 +74,11 @@ def login_user():
 @auth_bp.route('/logout')
 def logout():
     return "Logout successful"
+
+@auth_bp.route('/getuser/<int:user_id>')
+def get_user(user_id):
+    student = Student.query.get(user_id)
+    if student:
+        return jsonify({"name": student.student_name})
+    else:
+        return jsonify({"name": "Unknown"})

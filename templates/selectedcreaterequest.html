@@ -11,7 +11,7 @@
 
     <!-- Teacher Info -->
     <div class="mb-3">
-        <label class="form-label">Selected Teacher ID</label>
+        <label class="form-label">Selected Teacher</label>
         <input type="text" id="teacherId" class="form-control" readonly>
     </div>
 
@@ -31,11 +31,24 @@
 </div>
 
 <script>
+
+    const getTeacherName = (id) => {
+        // Placeholder function to get teacher name by ID
+        // In real implementation, you might fetch this from the server
+        //call the DB to get the teacher name by ID
+        teacherName = fetch(`/getuser/${id}`)
+            .then(res => res.json())
+            .then(data => data.name)
+            .catch(() => "Unknown Teacher");
+        return teacherName;
+    };
     // 🔹 Step 1: Get teacher ID from localStorage
     const teacherId = localStorage.getItem("selectedTeacher");
 
     // 🔹 Step 2: Show it in input field
-    document.getElementById("teacherId").value = teacherId;
+    getTeacherName(teacherId).then(name => {
+        document.getElementById("teacherId").value = `${name} (ID: ${teacherId})`;
+    });
 
     // 🔹 Step 3: Submit request
     function submitRequest() {

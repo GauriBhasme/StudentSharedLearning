@@ -87,7 +87,7 @@
     </div>
 
     <p class="text-center text-muted mb-5">
-      Manage your learning requests easily 🚀
+      Manage your learning requests easily
     </p>
 
     <!-- Tabs -->
@@ -229,8 +229,8 @@
         </div>
         <p class="mb-1 text-muted">${req.description}</p>
         <div class="mb-2">
-          <strong>Teacher:</strong> ${req.teacher_name || req.teacher_id} <br>
-          <strong>Learner:</strong> ${req.learner_name || req.learner_id}
+          <strong>To: </strong> ${req.teacher_name || req.teacher_id} <br>
+          <strong>From :</strong> ${req.learner_name || req.learner_id}
         </div>
         ${actionBtns}
       </div>
@@ -238,9 +238,11 @@
   `;
     }
 
+    
+
     function loadRequests(type) {
       let url = '';
-      if (type === 'all') url = '/all';
+      if (type === 'all') url = `/all/${userId}`;
       if (type === 'sent') url = `/sent/${userId}`;
       if (type === 'received') url = `/received/${userId}`;
       const container = document.getElementById(type + '-requests');

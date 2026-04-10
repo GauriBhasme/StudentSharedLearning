@@ -28,7 +28,7 @@
       <!-- Flash Messages -->
       {% with messages = get_flashed_messages() %}
         {% if messages %}
-          <div class="alert alert-danger">
+          <div class="alert alert-success">
             {{ messages[0] }}
           </div>
         {% endif %}
@@ -72,7 +72,7 @@
       <div class="text-center">
         <small class="text-muted">
           Don't have an account?
-          <a href="{{ url_for('auth.register_page') }}">Register</a>
+          <a href="{{ url_for('auth.register_user') }}">Register</a>
         </small>
       </div>
 

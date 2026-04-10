@@ -22,9 +22,9 @@ def enrich_request(req):
     }
 
 
-@request_bp.route('/all')
-def get_all_requests():
-    requests = Request.query.all()
+@request_bp.route('/all/<user_id>')
+def get_all_requests(user_id):
+    requests = Request.query.filter((Request.learner_id == user_id) | (Request.teacher_id == user_id)).all()
     return jsonify([enrich_request(req) for req in requests])
 
 
